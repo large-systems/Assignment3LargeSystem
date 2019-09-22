@@ -7,5 +7,5 @@ SSDs:
 
 
 
-Inline-style: 
-![alt text](https://github.com/large-systems/Assignment3LargeSystem/blob/master/use_case_diagram.jpg "Logo Title Text 1")
+Usecase diagram: 
+![alt text](https://github.com/large-systems/Assignment3LargeSystem/blob/master/use_case_diagram.jpg "Diagram on our use cases")
