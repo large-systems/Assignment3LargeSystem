@@ -8,4 +8,4 @@ SSDs:
 Reference-style: 
 ![alt text][logo]
 
-[logo]: https://github.com/large-systems/Assignment3LargeSystem/blob/master/use_case_diagram.jpg "Diagram over our use cases"
+[logo2]: https://github.com/large-systems/Assignment3LargeSystem/blob/master/use_case_diagram.jpg "Diagram over our use cases"
