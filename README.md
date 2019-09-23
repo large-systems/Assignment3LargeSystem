@@ -4,6 +4,7 @@ SSDs:
 ![alt text][logo]
 
 [logo]: https://github.com/large-systems/Assignment3LargeSystem/blob/master/SSD.jpg "SDDs we have created based on our use cases"
+![ssd cancel booking](ssd_cancel_booking.png)
 
 
 Usecase diagram: 
