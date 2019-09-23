@@ -1,9 +1,9 @@
 # Assignment3LargeSystem
 
-SSDs: 
+## SSDs: 
 ![alt text][logo]
 
-[logo]: https://github.com/large-systems/Assignment3LargeSystem/blob/master/SSD.jpg "SDDs we have created based on our use cases"
+[logo]: https://github.com/large-systems/Assignment3LargeSystem/blob/master/SSD_MakeBooking.jpg "SDDs we have created based on our use cases"
 
 ### Cancel booking
 ![ssd cancel booking](ssd_cancel_booking.png)
