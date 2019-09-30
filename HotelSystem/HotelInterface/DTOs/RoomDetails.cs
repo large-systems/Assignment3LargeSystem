@@ -15,7 +15,7 @@ namespace HotelSystem.DTOs
         public int _capacity;
 
 
-        public int ID { get; set; }
+     
 
         public int RoomNumber { get; set; }
 
