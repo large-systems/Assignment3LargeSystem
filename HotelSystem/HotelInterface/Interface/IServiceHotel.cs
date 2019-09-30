@@ -7,7 +7,6 @@ using System.Text;
 using HotelInterface.DTOs;
 using HotelSystem.DTOs;
 using HotelSystem.Exception;
-using HotelSystem.Model;
 
 namespace HotelInterface.Interface
 {
