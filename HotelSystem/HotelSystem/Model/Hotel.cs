@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HotelSystem
 {
-    public class Hotel : Identifier
+    public class Hotel
     {
 
         private string _name;

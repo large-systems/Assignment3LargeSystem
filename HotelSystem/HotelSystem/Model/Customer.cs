@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HotelSystem
 {
-    public class Customer : Identifier
+    public class Customer
     {
         private int _passportNumber;
 

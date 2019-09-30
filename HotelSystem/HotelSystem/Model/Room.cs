@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HotelSystem.Model
 {
-    public class Room : Identifier
+    public class Room
     {
         private string _rooomType;
 
