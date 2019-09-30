@@ -11,6 +11,8 @@
 ### Get booking details
 ![ssd get booking details](ssd_get_booking_details.png)
 
+### Add new hotel
+![ssd add new hotel](ssd_add_hotel.png)]
 Usecase diagram: 
 ![alt text](https://github.com/large-systems/Assignment3LargeSystem/blob/master/use_case_diagram.jpg "Diagram on our use cases")
 
