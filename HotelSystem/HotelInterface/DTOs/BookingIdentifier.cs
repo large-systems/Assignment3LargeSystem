@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 
 namespace HotelSystem.DTOs
 {
+    [DataContract]
     public class BookingIdentifier
     {
         private int _id;
