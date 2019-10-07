@@ -45,6 +45,14 @@ steps:
     publishLocation: 'Container'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet pack'
   inputs:
     command: pack
     packagesToPack: '**/HotelInterface/*.csproj'
+  
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    publishVstsFeed: 'test-feed'
+    allowPackageConflicts: true
