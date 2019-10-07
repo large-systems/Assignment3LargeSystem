@@ -37,3 +37,13 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'artifact1'
     publishLocation: 'Container'
+
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: '**/HotelInterface/*.csproj'
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    versioningScheme: 'off'
