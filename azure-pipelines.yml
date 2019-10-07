@@ -35,11 +35,11 @@ steps:
 - task: CopyFiles@1
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    Contents: 'HotelSystem/HotelInterface/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'artifact1'
+    ArtifactName: 'Interface-binaries'
     publishLocation: 'Container'
