@@ -27,23 +27,32 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+#- task: VSTest@2
+#  inputs:
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@1
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/HotelInterface/**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'artifact1'
+    ArtifactName: 'Interface-binaries'
     publishLocation: 'Container'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet pack'
   inputs:
     command: pack
     packagesToPack: '**/HotelInterface/*.csproj'
+  
 - task: NuGetCommand@2
+  displayName: 'NuGet push'
   inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
+    command: push
+    publishVstsFeed: 'test-feed'
+    allowPackageConflicts: true
