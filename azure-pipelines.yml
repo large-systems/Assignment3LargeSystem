@@ -35,7 +35,7 @@ steps:
 - task: CopyFiles@1
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: 'HotelSystem/HotelInterface/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    Contents: '**/HotelInterface/**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   
 - task: PublishBuildArtifacts@1
