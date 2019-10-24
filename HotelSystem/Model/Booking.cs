@@ -6,9 +6,8 @@ using HotelSystem.Model;
 
 namespace HotelSystem
 {
-    public class Booking 
+    public class Booking
     {
-
         private DateTime _startDate;
         private DateTime _endDate;
 
