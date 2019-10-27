@@ -25,6 +25,11 @@ namespace HotelSystem
             return true;
         }
 
+        public string EchoTest(string input)
+        {
+            return "Hotel service echo:" + input;
+        }
+
         public BookingDetails FindBookingByid(BookingIdentifier bookingIdentifier)
         {
             throw new NotImplementedException();
