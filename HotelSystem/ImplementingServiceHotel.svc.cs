@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using HotelInterface.DTOs;
 using HotelInterface.Interface;
-using HotelSystem.DTOs;
 
 namespace HotelSystem
 {

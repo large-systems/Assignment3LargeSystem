@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HotelInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotelInterface.1.0.4\lib\net461\HotelInterface.dll</HintPath>
+      <HintPath>..\packages\HotelInterface.1.0.5\lib\net461\HotelInterface.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
