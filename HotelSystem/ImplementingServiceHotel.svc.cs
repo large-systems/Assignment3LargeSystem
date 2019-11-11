@@ -51,7 +51,7 @@ namespace HotelSystem
 
         public string EchoTest(string input)
         {
-            return "Hotel service echo:" + input;
+            return "Hello from backend";
         }
 
         public BookingDetails FindBookingByid(BookingIdentifier bookingIdentifier)
