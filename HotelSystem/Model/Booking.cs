@@ -8,27 +8,13 @@ namespace HotelSystem
 {
     public class Booking
     {
-        private DateTime _startDate;
-        private DateTime _endDate;
-
-        private int _numberOfGuests;
-        private List<Room> _roomsBooked;
-
-        private DateTime _arrival;
-
-
-        public DateTime StartDate { get { return _startDate; } set { _startDate = value; } }
-
-        public DateTime EndDate { get { return _endDate; } set { _endDate = value; } }
-
-        public int NumberOfGuests { get { return _numberOfGuests; } set { _numberOfGuests = value; } }
-
-        public List<Room> RoomBooked { get { return _roomsBooked; } set {  _roomsBooked = value; } }
-
-
-        public DateTime Arrival { get { return _arrival; } set { _arrival = value; } }
-
-
-
+        public int Id { get; set; }
+        public int RoomId { get; set; }
+        public int GuestWhoBookedId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int NumOfGuests { get; set; }
+        public int NumOfRooms { get; set; }
+        public DateTime TimeArrival { get; set; }
     }
 }

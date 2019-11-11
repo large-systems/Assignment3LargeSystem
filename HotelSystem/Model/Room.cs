@@ -7,18 +7,10 @@ namespace HotelSystem.Model
 {
     public class Room
     {
-        private string _rooomType;
-
-        private int _roomNumber;
-
-        private double _price;
-
-
-        public string RoomType { get { return _rooomType; } set { _rooomType = value; } }
-
-        public int RoomNumber  { get { return _roomNumber; } set { _roomNumber = value; } }
-
-        public double Price { get { return _price ; } set { _price = value; } }
-
+        public int Id { get; set; }
+        public int HotelId { get; set; }
+        public string RoomType { get; set; }
+        public double Price { get; set; }
+        public int Capacity { get; set; }
     }
 }
