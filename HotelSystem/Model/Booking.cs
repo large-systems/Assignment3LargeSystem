@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using HotelSystem.Model;
 
-namespace HotelSystem
+namespace HotelSystem.Model
 {
     public class Booking
     {
@@ -16,5 +16,8 @@ namespace HotelSystem
         public int NumOfGuests { get; set; }
         public int NumOfRooms { get; set; }
         public DateTime TimeArrival { get; set; }
+
+        public virtual ICollection<Room> RoomRelation { get; set; }
+        public virtual Guest GuestRelation { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace HotelSystem
+namespace HotelSystem.Model
 {
     public class Hotel
     {
@@ -14,5 +14,8 @@ namespace HotelSystem
         public string City { get; set; }
         public double DistanceToCenter { get; set; }
         public int StarRating { get; set; }
+
+        public virtual ICollection<HotelChain> HotelChainRelation { get; set; }
+        public virtual ICollection<Room> RoomRelation { get; set; }
     }
 }
