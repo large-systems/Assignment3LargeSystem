@@ -1,14 +1,15 @@
 ﻿using HotelSystem.Model;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace HotelSystem
 {
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class HotelContext : DbContext
     {
 
         public HotelContext() : base("HotelContext")
         {
+            Database.SetInitializer<HotelContext>(null);
             //connection string goes here
         }
 

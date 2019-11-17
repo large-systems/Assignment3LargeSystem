@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using HotelInterface.DTOs;
 using HotelInterface.Interface;
+using HotelSystem.Exception;
+using HotelSystem.Mapper;
 using HotelSystem.Model;
 
 namespace HotelSystem
 {
     public class ImplementingServiceHotel : IServiceHotel
     {
+        private BookingMapper bookingMapper;
+
+        public ImplementingServiceHotel(): base()
+        {
+            bookingMapper = new BookingMapper();
+        }
+
         public void AddNewHotel(string name, string city, string address, HotelChainIdentifier hotelChainIdentifier)
         {
             using(var dbContext = new HotelContext())
@@ -24,7 +34,11 @@ namespace HotelSystem
         {
             using (var dbContext = new HotelContext())
             {
-                var booking = dbContext.Bookings.Where(b => b.Id.Equals(bookingIdentifier)).First();
+                var booking = dbContext.Bookings.FirstOrDefault(b => bookingIdentifier.ID == b.Id);
+                if (booking == null)
+                {
+                    throw new FaultException<BookingNotFoundException>(new BookingNotFoundException(), "Booking not found");
+                }
                 var dbDelete = dbContext.Bookings.Remove(booking);
             }
         }
@@ -39,12 +53,13 @@ namespace HotelSystem
                 {
                     guest = new Guest() { PassportNumber = passportNumber };
                 }
-                var booking = new Booking() { StartDate = startDate, EndDate = endDate, NumOfGuests = numberGuest, RoomRelation = rooms, GuestRelation = guest };
+                // TODO room relation is wrong
+                /*var booking = new Booking() { StartDate = startDate, EndDate = endDate, NumOfGuests = numberGuest, RoomRelation = rooms, GuestRelation = guest };
                 var dbInsert = dbContext.Bookings.Add(booking);
                 if(dbInsert != null)
                 {
                     return true;
-                }
+                }*/
                 return false;
             }
         }
@@ -58,9 +73,12 @@ namespace HotelSystem
         {
             using(var dbContext = new HotelContext())
             {
-                var booking = dbContext.Bookings.Where(b => b.Id.Equals(bookingIdentifier)).First();
-                var dbFind = dbContext.Bookings.Find(booking);
-                return dbFind; //BookingDetails class does not correspond to Booking model. This will have to be discussed
+                var booking = dbContext.Bookings.FirstOrDefault(b => b.Id == bookingIdentifier.ID);
+                if (booking == null)
+                {
+                    throw new FaultException<BookingNotFoundException>(new BookingNotFoundException(), "Booking not found");
+                }
+                return bookingMapper.ToDetails(booking);
             }
         }
 
@@ -68,10 +86,14 @@ namespace HotelSystem
         {
             using(var dbContext = new HotelContext())
             {
-                var guest = dbContext.Guests.Where(p => p.PassportNumber.Equals(passPortNUmber)).First();
+                var guest = dbContext.Guests.FirstOrDefault(p => p.PassportNumber.Equals(passPortNUmber));
+                if (guest == null)
+                {
+                    return new List<BookingDetails>(0);
+                }
                 var bookings = dbContext.Bookings.Where(p => p.GuestRelation.PassportNumber.Equals(passPortNUmber)).ToList();
-                return bookings;
-
+                var newBookings =bookings.Select(bookingMapper.ToDetails).ToList();
+                return newBookings;
             }
         }
 
