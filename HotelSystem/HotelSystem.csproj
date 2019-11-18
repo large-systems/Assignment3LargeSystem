@@ -51,7 +51,7 @@
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="HotelInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HotelInterface.1.0.5\lib\net461\HotelInterface.dll</HintPath>
+      <HintPath>..\packages\HotelInterface.1.0.7\lib\net461\HotelInterface.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=6.10.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -96,6 +96,7 @@
       <DependentUpon>ImplementingServiceHotel.svc</DependentUpon>
     </Compile>
     <Compile Include="Mapper\BookingMapper.cs" />
+    <Compile Include="Mapper\HotelMapper.cs" />
     <Compile Include="Mapper\RoomMapper.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\Customer.cs" />

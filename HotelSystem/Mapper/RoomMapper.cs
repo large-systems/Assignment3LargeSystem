@@ -20,5 +20,10 @@ namespace HotelSystem.Mapper
                 // TODO roomnumber when fixed
             };
         }
+
+        public RoomIdentifier ToIdentifier(Room room)
+        {
+            return new RoomIdentifier(room.Id);
+        }
     }
 }

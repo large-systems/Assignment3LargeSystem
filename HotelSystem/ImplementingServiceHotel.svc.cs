@@ -14,10 +14,12 @@ namespace HotelSystem
     public class ImplementingServiceHotel : IServiceHotel
     {
         private BookingMapper bookingMapper;
+        private HotelMapper hotelMapper;
 
         public ImplementingServiceHotel(): base()
         {
             bookingMapper = new BookingMapper();
+            hotelMapper = new HotelMapper();
         }
 
         public void AddNewHotel(string name, string city, string address, HotelChainIdentifier hotelChainIdentifier)
@@ -26,6 +28,7 @@ namespace HotelSystem
             {
                 var hotel = new Hotel() { Name = name, City = city, Address = address, HotelChainsId = hotelChainIdentifier.ID };
                 var dbInsert = dbContext.Hotels.Add(hotel);
+                dbContext.SaveChanges();
             }
 
         }
@@ -40,6 +43,7 @@ namespace HotelSystem
                     throw new FaultException<BookingNotFoundException>(new BookingNotFoundException(), "Booking not found");
                 }
                 var dbDelete = dbContext.Bookings.Remove(booking);
+                dbContext.SaveChanges();
             }
         }
 
@@ -67,6 +71,26 @@ namespace HotelSystem
         public string EchoTest(string input)
         {
             return "Hotel service echo:" + input;
+        }
+
+        public List<HotelDetails> FindAvailableHotels(DateTime startDate, DateTime endDate, int numRooms, string city)
+        {
+            using (var dbContext = new HotelContext())
+            {
+                // https://stackoverflow.com/a/15168236
+                // Allegedly EF sucks at querying nested _-to-many relations
+                // Therefore do the last filtering in c#
+                var hotels = dbContext.Hotels.Where(h => h.City.ToLower() == city.ToLower()).ToList();
+                // Filter Rooms based on whether they DO NOT have bookings in that period
+                hotels = hotels.Where(h => 
+                        h.RoomRelation.Where(r => 
+                            r.BookingRelation.Where(b => b.StartDate >= startDate && b.EndDate <= endDate).Count() == 0
+                        ).Count() >= numRooms
+                ).ToList();
+
+                var hotelDetails = hotels.Select(hotelMapper.ToDetails).ToList();
+                return hotelDetails;
+            }
         }
 
         public BookingDetails FindBookingByid(BookingIdentifier bookingIdentifier)
