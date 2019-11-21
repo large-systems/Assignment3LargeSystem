@@ -71,7 +71,6 @@ namespace HotelSystem
                 var guest = dbContext.Guests.Where(p => p.PassportNumber.Equals(passPortNUmber)).First();
                 var bookings = dbContext.Bookings.Where(p => p.GuestRelation.PassportNumber.Equals(passPortNUmber)).ToList();
                 return bookings;
-
             }
         }
 

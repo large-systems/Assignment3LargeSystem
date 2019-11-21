@@ -9,7 +9,7 @@ namespace HotelSystem
 
         public HotelContext() : base("HotelContext")
         {
-            //connection string goes here
+            // 
         }
 
         public DbSet<Booking> Bookings { get; set; }
