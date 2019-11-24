@@ -19,8 +19,8 @@ namespace HotelSystem.Model
         public int RoomId { get; set; }
 
         [ForeignKey("BookingId")]
-        public Booking Booking { get; set; }
+        public virtual Booking Booking { get; set; }
         [ForeignKey("RoomId")]
-        public Room Room { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

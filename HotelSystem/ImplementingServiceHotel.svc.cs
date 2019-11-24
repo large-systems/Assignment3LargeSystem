@@ -121,7 +121,10 @@ namespace HotelSystem
                 {
                     return new List<BookingDetails>(0);
                 }
-                var bookings = dbContext.Bookings.Where(p => p.GuestRelation.PassportNumber.Equals(passPortNUmber)).ToList();
+                var bookings = dbContext.Bookings
+                    .Include("RoomRelation.Room")
+                    .Where(p => p.GuestRelation.PassportNumber.Equals(passPortNUmber))
+                    .ToList();
                 var newBookings =bookings.Select(bookingMapper.ToDetails).ToList();
                 return newBookings;
             }
