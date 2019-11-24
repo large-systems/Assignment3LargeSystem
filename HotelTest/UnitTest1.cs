@@ -43,7 +43,7 @@ namespace HotelTest
         public void FindRoomsTest()
         {
             // DateTime is in the format year, month, day, hour, minute, second
-            Assert.Greater(0, hotelsystem.FindRooms(new System.DateTime(2019, 3, 1, 7, 0, 0), new HotelIdentifier(1), "Luksusrum").Count);
+            Assert.Greater(0, hotelsystem.FindRooms(new HotelIdentifier(1), new System.DateTime(2019, 1, 1, 7, 0, 0), new System.DateTime(2019, 3, 1, 7, 0, 0), "Luksusrum").Count);
         }
 
         [Test]
