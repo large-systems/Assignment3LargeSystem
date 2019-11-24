@@ -11,6 +11,7 @@ using HotelSystem.Model;
 
 namespace HotelSystem
 {
+    [HotelServiceBehavior]
     public class ImplementingServiceHotel : IServiceHotel
     {
         private BookingMapper bookingMapper;
