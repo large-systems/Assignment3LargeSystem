@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.ServiceModel;
 using System.Web;
@@ -52,11 +53,27 @@ namespace HotelSystem
 
         public bool CreateBooking(DateTime startDate, DateTime endDate, int numberGuest, List<RoomIdentifier> listOfRooms, int passportNumber, string guestNumber)
         {
-            // TODO handle concurrency.
-            using(var dbContext = new HotelContext())
+            using (var dbContext = new HotelContext())
+            // Highest isolation level - serializable(meaning transactions must happen serially) is required.
+            // Primarily this is required because we cannot allow anyone else to insert bookings
+            // between when this transaction READS the list of ROOMS and another transaction WRITES
+            // its BOOKING. If that were to happen, the room would become unavailable and this transaction
+            // would not know about it - therefore double booking the room.
+            // The same is also true for inserting a guest: if the Guest would be trying to 
+            // create two bookings, we only want one row exist in the guest table, therefore
+            // RepeatableRead(the next isolation level) is not enough, because it allows new
+            // data to be inserted
+            using (var t = dbContext.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 var roomIds = listOfRooms.Select(r => r.ID).ToList();
                 var rooms = dbContext.Rooms.Where(r => roomIds.Contains(r.Id)).ToList();
+
+                // If even one of the requested rooms is not available, throw error.
+                if (rooms.Count() != FilterAvailableRooms(rooms, startDate, endDate, "").Count())
+                {
+                    throw new FaultException<RoomNotAvailableException>(new RoomNotAvailableException());
+                }
+
                 var guest = dbContext.Guests.FirstOrDefault(p => p.PassportNumber.Equals(passportNumber));
                 if(guest == null)
                 {
@@ -73,7 +90,9 @@ namespace HotelSystem
                     GuestRelation = guest
                 };
                 dbContext.Bookings.Add(booking);
-                return dbContext.SaveChanges() > 0;
+                int rowsAffected = dbContext.SaveChanges();
+                t.Commit();
+                return rowsAffected > 0;
             }
         }
 
