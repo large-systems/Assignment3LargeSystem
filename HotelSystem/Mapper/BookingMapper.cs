@@ -9,7 +9,7 @@ namespace HotelSystem.Mapper
 {
     public class BookingMapper
     {
-        private RoomMapper roomMapper = new RoomMapper();
+        private readonly RoomMapper roomMapper = new RoomMapper();
 
         public BookingDetails ToDetails(Booking booking)
         {
@@ -20,8 +20,7 @@ namespace HotelSystem.Mapper
                 EndDate = booking.EndDate,
                 NumberOfRooms = booking.NumOfRooms,
                 StartDate = booking.StartDate,
-                // TODO fix when relation fixed
-                ListOfRoomsDetails = new List<RoomDetails>(new RoomDetails[] { roomMapper.ToDetails(booking.RoomRelation) }),
+                ListOfRoomsDetails = booking.RoomRelation.Select(r => roomMapper.ToDetails(r.Room)).ToList(),
             };
         }
     }

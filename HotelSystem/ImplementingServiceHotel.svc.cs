@@ -16,11 +16,13 @@ namespace HotelSystem
     {
         private BookingMapper bookingMapper;
         private HotelMapper hotelMapper;
+        private RoomMapper roomMapper;
 
         public ImplementingServiceHotel(): base()
         {
             bookingMapper = new BookingMapper();
             hotelMapper = new HotelMapper();
+            roomMapper = new RoomMapper();
         }
 
         public void AddNewHotel(string name, string city, string address, HotelChainIdentifier hotelChainIdentifier)
@@ -50,22 +52,28 @@ namespace HotelSystem
 
         public bool CreateBooking(DateTime startDate, DateTime endDate, int numberGuest, List<RoomIdentifier> listOfRooms, int passportNumber, string guestNumber)
         {
+            // TODO handle concurrency.
             using(var dbContext = new HotelContext())
             {
-                var rooms = dbContext.Rooms.Where(r => listOfRooms.Find(s => r.Id.Equals(s.ID)) != null).ToList();
-                var guest = dbContext.Guests.Where(p => p.PassportNumber.Equals(passportNumber)).First();
+                var roomIds = listOfRooms.Select(r => r.ID).ToList();
+                var rooms = dbContext.Rooms.Where(r => roomIds.Contains(r.Id)).ToList();
+                var guest = dbContext.Guests.FirstOrDefault(p => p.PassportNumber.Equals(passportNumber));
                 if(guest == null)
                 {
                     guest = new Guest() { PassportNumber = passportNumber };
                 }
-                // TODO room relation is wrong
-                /*var booking = new Booking() { StartDate = startDate, EndDate = endDate, NumOfGuests = numberGuest, RoomRelation = rooms, GuestRelation = guest };
-                var dbInsert = dbContext.Bookings.Add(booking);
-                if(dbInsert != null)
+
+                var booking = new Booking()
                 {
-                    return true;
-                }*/
-                return false;
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    NumOfGuests = numberGuest,
+                    NumOfRooms = rooms.Count(),
+                    RoomRelation = rooms.Select(r => new BookingRoom() { RoomId = r.Id }).ToList(),
+                    GuestRelation = guest
+                };
+                dbContext.Bookings.Add(booking);
+                return dbContext.SaveChanges() > 0;
             }
         }
 
@@ -82,11 +90,8 @@ namespace HotelSystem
                 // Allegedly EF sucks at querying nested _-to-many relations
                 // Therefore do the last filtering in c#
                 var hotels = dbContext.Hotels.Where(h => h.City.ToLower() == city.ToLower()).ToList();
-                // Filter Rooms based on whether they DO NOT have bookings in that period
-                hotels = hotels.Where(h => 
-                        h.RoomRelation.Where(r => 
-                            r.BookingRelation.Where(b => b.StartDate >= startDate && b.EndDate <= endDate).Count() == 0
-                        ).Count() >= numRooms
+                hotels = hotels.Where(
+                    h => FilterAvailableRooms(h.RoomRelation, startDate, endDate, "").Count() >= numRooms
                 ).ToList();
 
                 var hotelDetails = hotels.Select(hotelMapper.ToDetails).ToList();
@@ -122,9 +127,30 @@ namespace HotelSystem
             }
         }
 
-        public List<RoomDetails> FindRooms(DateTime date, HotelIdentifier hotel, string roomType)
+        public List<RoomDetails> FindRooms(HotelIdentifier hotel, DateTime startDate, DateTime endDate, string roomType)
         {
-            throw new NotImplementedException();
+            using (var dbContext = new HotelContext())
+            {
+                var hotelEntity = dbContext.Hotels.FirstOrDefault(h => h.Id == hotel.ID);
+                if (hotelEntity != null)
+                {
+                    return FilterAvailableRooms(hotelEntity.RoomRelation, startDate, endDate, roomType)
+                        .Select(r => roomMapper.ToDetails(r))
+                        .ToList();
+                }
+                return new List<RoomDetails>();
+            }
+        }
+
+        private IEnumerable<Room> FilterAvailableRooms(ICollection<Room> rooms, DateTime startDate, DateTime endDate, string roomType)
+        {
+            // Filter Rooms based on whether they DO NOT have bookings in that period
+            return rooms.Where(r =>
+                (string.IsNullOrEmpty(roomType) || r.RoomType == roomType)
+                && r.BookingRelation.Where(
+                    b => b.Booking.StartDate >= startDate && b.Booking.EndDate <= endDate
+                ).Count() == 0
+            );
         }
     }
 }

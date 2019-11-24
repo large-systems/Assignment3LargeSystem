@@ -14,8 +14,6 @@ namespace HotelSystem.Model
         [Column("id")]
         [Key]
         public int Id { get; set; }
-        [Column("room_id")]
-        public int RoomId { get; set; }
         [Column("guest_who_booked_id")]
         public int GuestWhoBookedId { get; set; }
         [Column("start_date")]
@@ -30,8 +28,7 @@ namespace HotelSystem.Model
         public DateTime TimeArrival { get; set; }
 
 
-        [ForeignKey("RoomId")]
-        public virtual Room RoomRelation { get; set; }
+        public virtual List<BookingRoom> RoomRelation { get; set; }
         [ForeignKey("GuestWhoBookedId")]
         public virtual Guest GuestRelation { get; set; }
     }

@@ -24,7 +24,6 @@ namespace HotelSystem.Model
 
         [ForeignKey("HotelId")]
         public virtual Hotel HotelRelation { get; set; }
-        [InverseProperty("RoomRelation")]
-        public virtual ICollection<Booking> BookingRelation { get; set; }
+        public virtual ICollection<BookingRoom> BookingRelation { get; set; }
     }
 }
