@@ -42,8 +42,9 @@ namespace HotelTest
         [Test]
         public void FindRoomsTest()
         {
+            List<RoomDetails> roomsFound = hotelsystem.FindRooms(new HotelIdentifier(1), new System.DateTime(2019, 3, 1, 7, 0, 0), new System.DateTime(2019, 3, 1, 7, 0, 0), "luksusrum");
             // DateTime is in the format year, month, day, hour, minute, second
-            Assert.Greater(0, hotelsystem.FindRooms(new System.DateTime(2019, 3, 1, 7, 0, 0), new HotelIdentifier(1), "Luksusrum").Count);
+            Assert.Greater(0,roomsFound.Count);
         }
 
         [Test]
